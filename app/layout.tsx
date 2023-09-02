@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { ReactNode } from "react";
 
 interface LayoutProps {
@@ -8,9 +9,26 @@ function RootLayout({ children }: LayoutProps) {
   return (
     <html lang="en">
       <body>
-        <header>[header]</header>
+        <header>
+          <nav>
+            <ul>
+              <Link href="/">Home</Link>
+            </ul>
+            <ul>
+              <Link href="/reviews">Reviews</Link>
+            </ul>
+            <ul>
+              <Link href="/about">About</Link>
+            </ul>
+          </nav>
+        </header>
         <main>{children}</main>
-        <footer>[footer]</footer>
+        <footer>
+          Game data and images courtesy of{" "}
+          <a href="https://rawg.io/" target="_blank">
+            RAWG
+          </a>
+        </footer>
       </body>
     </html>
   );
