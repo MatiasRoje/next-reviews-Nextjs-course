@@ -1,7 +1,9 @@
+import Heading from "@/components/Heading";
+
 function AboutPage() {
   return (
     <>
-      <h1>About</h1>
+      <Heading>About</Heading>
       <p>Here we will write the about page</p>
     </>
   );
