@@ -7,7 +7,7 @@ function HomePage() {
     <>
       <Heading>Indie Gamer</Heading>
       <p className="pb-3">Only the best indie games, reviewed for you.</p>
-      <div className="bg-gray-50 border rounded w-80 sm:w-full shadow-sm hover:shadow">
+      <div className="bg-gray-50 border rounded w-80 sm:w-2/3 shadow-sm hover:shadow">
         <Link
           href="/reviews/stardew-valley"
           className="flex flex-col sm:flex-row"
