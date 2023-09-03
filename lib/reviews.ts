@@ -1,6 +1,9 @@
 import { readFile, readdir } from "node:fs/promises";
 import { marked } from "marked";
 import matter from "gray-matter";
+import qs from "qs";
+
+const CMS_URL = "http://localhost:1337";
 
 interface Review {
   title: string;
@@ -21,19 +24,26 @@ export async function getReview(slug: string): Promise<Review> {
 }
 
 export async function getReviews() {
-  const slugs = await getSlugs();
-
-  const reviews = [];
-  for (const slug of slugs) {
-    const review = await getReview(slug);
-    reviews.push(review);
-  }
-
-  // The newest review get order at the beginning of the array, as the novelties should be at the top of the page
-  return reviews.sort(
-    (a: Review, b: Review) =>
-      new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
+  const url =
+    `${CMS_URL}/api/reviews?` +
+    qs.stringify(
+      {
+        fields: ["slug", "title", "subtitle", "publishedAt"],
+        populate: { image: { fields: ["url"] } },
+        sort: ["publishedAt:desc"],
+        pagination: { pageSize: 6 },
+      },
+      { encodeValuesOnly: true }
+    );
+  console.log("getReviews:", url);
+  const response = await fetch(url);
+  const { data } = await response.json();
+  return data.map(({ attributes }) => ({
+    slug: attributes.slug,
+    title: attributes.title,
+    date: attributes.publishedAt.slice(0, "yyyy-mm-dd".length),
+    image: CMS_URL + attributes.image.data.attributes.url,
+  }));
 }
 
 export async function getSlugs() {
@@ -47,3 +57,20 @@ export async function getFeaturedReview() {
   const reviews = await getReviews();
   return reviews[0];
 }
+
+// NOTE Legacy code, function created for the stactic version of the website fectching local data
+// export async function getReviews() {
+//   const slugs = await getSlugs();
+
+//   const reviews = [];
+//   for (const slug of slugs) {
+//     const review = await getReview(slug);
+//     reviews.push(review);
+//   }
+
+//   // The newest review get order at the beginning of the array, as the novelties should be at the top of the page
+//   return reviews.sort(
+//     (a: Review, b: Review) =>
+//       new Date(b.date).getTime() - new Date(a.date).getTime()
+//   );
+// }
