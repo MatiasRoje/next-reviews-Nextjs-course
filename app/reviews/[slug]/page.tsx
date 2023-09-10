@@ -21,11 +21,11 @@ export async function generateMetadata({
   };
 }
 
-export async function generateStaticParams(): Promise<ReviewPageParams[]> {
-  const slugs = await getSlugs();
+// export async function generateStaticParams(): Promise<ReviewPageParams[]> {
+//   const slugs = await getSlugs();
 
-  return slugs.map((slug) => ({ slug }));
-}
+//   return slugs.map((slug) => ({ slug }));
+// }
 
 async function ReviewPage({ params: { slug } }: ReviewPageProps) {
   const review = await getReview(slug);

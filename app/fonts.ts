@@ -1,4 +1,4 @@
-import { Orbitron, Exo_2 } from "next/font/google";
+import { Orbitron, Exo_2, Poppins } from "next/font/google";
 
 export const orbitron = Orbitron({
   subsets: ["latin"],
