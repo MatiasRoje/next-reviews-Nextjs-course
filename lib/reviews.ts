@@ -3,6 +3,8 @@ import qs from "qs";
 
 const CMS_URL = "http://localhost:1337";
 
+export const CACHE_TAG_REVIEWS = "reviews";
+
 interface CmsItem {
   id: number;
   attributes: any;
@@ -27,6 +29,8 @@ export async function getReview(slug: string): Promise<FullReview> {
     populate: { image: { fields: ["url"] } },
     pagination: { pageSize: 1, withCount: false },
   });
+  if (data.length === 0) return null;
+
   const item = data.at(0);
   return {
     ...toReview(item),
@@ -58,7 +62,13 @@ async function fetchReviews(parameters: any) {
     `${CMS_URL}/api/reviews?` +
     qs.stringify(parameters, { encodeValuesOnly: true });
   // console.log('[fetchReviews]:', url);
-  const response = await fetch(url);
+  const response = await fetch(url, {
+    next: {
+      // // NOTE: You can revalidate the fetch function this way
+      // revalidate: 500, // seconds
+      tags: [CACHE_TAG_REVIEWS],
+    },
+  });
   if (!response.ok) {
     throw new Error(`CMS returned ${response.status} for ${url}`);
   }

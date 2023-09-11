@@ -3,6 +3,9 @@ import Heading from "@/components/Heading";
 import Image from "next/image";
 import { getReviews } from "@/lib/reviews";
 
+// NOTE: You can revalidate the whole page this way
+// export const revalidate = 500;
+
 export const metadata = {
   title: "Reviews",
 };

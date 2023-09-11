@@ -3,6 +3,9 @@ import { getReviews } from "@/lib/reviews";
 import Image from "next/image";
 import Link from "next/link";
 
+// NOTE: You can revalidate the whole page this way
+// export const revalidate = 500;
+
 async function HomePage() {
   const reviews = await getReviews(3);
 
