@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Heading from "@/components/Heading";
 import ShareLinkButton from "@/components/ShareLinkButton";
 import { getReview, getSlugs } from "@/lib/reviews";
+import Image from "next/image";
 
 interface ReviewPageParams {
   slug: string;
@@ -34,16 +35,18 @@ export default async function ReviewPage({
   return (
     <>
       <Heading>{review.title}</Heading>
+      <p className="font-medium pb-2">{review.subtitle}</p>
       <div className="flex gap-3 items-baseline">
         <p className="italic pb-2">{review.date}</p>
         <ShareLinkButton />
       </div>
-      <img
+      <Image
         src={review.image}
         alt=""
         width="640"
         height="360"
         className="mb-2 rounded"
+        priority
       />
       <article
         dangerouslySetInnerHTML={{ __html: review.body }}
