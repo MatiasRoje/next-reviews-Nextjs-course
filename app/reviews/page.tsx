@@ -3,6 +3,7 @@ import Heading from "@/components/Heading";
 import Image from "next/image";
 import { getReviews } from "@/lib/reviews";
 import PaginationBar from "@/components/PaginationBar";
+import Searchbox from "@/components/Searchbox";
 
 // NOTE: You can revalidate the whole page this way
 // export const revalidate = 500;
@@ -34,7 +35,10 @@ async function ReviewsPage({ searchParams }: ReviewsPageProps) {
   return (
     <>
       <Heading>Reviews</Heading>
-      <PaginationBar href="/reviews/" page={page} pageCount={pageCount} />
+      <div className="flex pb-2 gap-10">
+        <PaginationBar href="/reviews/" page={page} pageCount={pageCount} />
+        <Searchbox />
+      </div>
       <ul className="flex flex-row flex-wrap gap-3">
         {reviews.map((review, index) => (
           <li
