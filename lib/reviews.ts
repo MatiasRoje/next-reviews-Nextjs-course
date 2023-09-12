@@ -1,3 +1,5 @@
+import "server-only";
+
 import { marked } from "marked";
 import qs from "qs";
 
@@ -25,6 +27,11 @@ export interface FullReview extends Review {
 export interface PaginatedReviews {
   pageCount: number;
   reviews: Review[];
+}
+
+export interface SearchableReview {
+  slug: string;
+  title: string;
 }
 
 export async function getReview(slug: string): Promise<FullReview> {
@@ -57,6 +64,21 @@ export async function getReviews(
     pageCount: meta.pagination.pageCount,
     reviews: data.map(toReview),
   };
+}
+
+export async function searchReviews(
+  query: string
+): Promise<SearchableReview[]> {
+  const { data } = await fetchReviews({
+    filters: { title: { $containsi: query } },
+    fields: ["slug", "title"],
+    sort: ["title"],
+    pagination: { pageSize: 5 },
+  });
+  return data.map(({ attributes }) => ({
+    slug: attributes.slug,
+    title: attributes.title,
+  }));
 }
 
 export async function getSlugs(): Promise<string[]> {

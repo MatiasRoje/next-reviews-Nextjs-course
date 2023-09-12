@@ -8,6 +8,5 @@ export async function POST(request: NextRequest) {
     revalidateTag(CACHE_TAG_REVIEWS);
   }
 
-  console.log("payload:", payload);
   return new Response(null, { status: 204 });
 }
