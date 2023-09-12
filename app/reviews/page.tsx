@@ -2,7 +2,7 @@ import Link from "next/link";
 import Heading from "@/components/Heading";
 import Image from "next/image";
 import { getReviews } from "@/lib/reviews";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
+import PaginationBar from "@/components/PaginationBar";
 
 // NOTE: You can revalidate the whole page this way
 // export const revalidate = 500;
@@ -29,21 +29,12 @@ function parsePageParam(paramValue: string): number {
 
 async function ReviewsPage({ searchParams }: ReviewsPageProps) {
   const page = searchParams.page ? parsePageParam(searchParams.page) : 1;
-  console.log(page);
-  const reviews = await getReviews(PAGE_SIZE, page);
+  const { reviews, pageCount } = await getReviews(PAGE_SIZE, page);
 
   return (
     <>
       <Heading>Reviews</Heading>
-      <div className="flex gap-2 pb-2 items-center">
-        <Link href={`/reviews/?page=${page - 1}`}>
-          <ChevronLeftIcon className="w-4 h-4" />
-        </Link>
-        <span className="">Page {page}</span>
-        <Link href={`/reviews/?page=${page + 1}`}>
-          <ChevronRightIcon className="w-4 h-4" />
-        </Link>
-      </div>
+      <PaginationBar href="/reviews/" page={page} pageCount={pageCount} />
       <ul className="flex flex-row flex-wrap gap-3">
         {reviews.map((review, index) => (
           <li

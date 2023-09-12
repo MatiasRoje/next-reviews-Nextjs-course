@@ -7,7 +7,7 @@ import Link from "next/link";
 // export const revalidate = 500;
 
 async function HomePage() {
-  const reviews = await getReviews(3);
+  const { reviews } = await getReviews(3);
 
   return (
     <>
